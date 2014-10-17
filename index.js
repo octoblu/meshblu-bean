@@ -124,20 +124,12 @@ Plugin.prototype.getBean = function(callback){
 };
 
 Plugin.prototype.onMessage = function(message){
-  var payload, self, rgb;
-  payload = message.payload;
-  self = this;
-  self.getBean(function(error, bean){
-    if(error){
-      self.emit('error', error);
-      return;
-    }
+  var payload = message.payload;
+  this.updateBean(payload);
+};
 
-    if(payload.color){
-      rgb = tinycolor(payload.color).toRgb();
-      bean.setColor(new Buffer([rgb.r, rgb.g, rgb.b]));
-    }
-  });
+Plugin.prototype.onConfig = function(device){
+  this.setOptions(device.options||{});
 };
 
 Plugin.prototype.setOptions = function(options){
@@ -178,7 +170,23 @@ Plugin.prototype.setupBean = function() {
       }, self.options.broadcastTempInterval);
     }
   });
-}
+};
+
+Plugin.prototype.updateBean = function(payload){
+  var self, rgb;
+  self = this;
+  self.getBean(function(error, bean){
+    if(error){
+      self.emit('error', error);
+      return;
+    }
+
+    if(payload.color){
+      rgb = tinycolor(payload.color).toRgb();
+      bean.setColor(new Buffer([rgb.r, rgb.g, rgb.b]));
+    }
+  });
+};
 
 module.exports = {
   messageSchema: MESSAGE_SCHEMA,
