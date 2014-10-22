@@ -22,7 +22,13 @@ var OPTIONS_SCHEMA = {
   properties: {
     uuid: {
       type: 'string',
-      required: true
+      required: true,
+      default: ''
+    },
+    localName: {
+      type: 'string',
+      required: true,
+      default: ''
     },
     broadcastAccel: {
       type: 'boolean',
@@ -75,7 +81,8 @@ Plugin.prototype.discoverDevice = function(callback) {
   }, self.options.timeout);
 
   noble.on('discover', function(peripheral){
-    if (peripheral.uuid === self.options.uuid) {
+	  console.log('BLE UUID', peripheral.uuid);
+    if (peripheral.uuid === self.options.uuid || self.options.localName === self.options.localName) {
       clearTimeout(timeout);
       done();
       callback(null, peripheral);
@@ -133,7 +140,7 @@ Plugin.prototype.onConfig = function(device){
 };
 
 Plugin.prototype.setOptions = function(options){
-  this.options = options;
+  this.options = options || {};
   this._bean = null;
 
   this.setupBean();
@@ -141,8 +148,8 @@ Plugin.prototype.setOptions = function(options){
 
 Plugin.prototype.setupBean = function() {
   var self = this;
-
-  if (!self.options.uuid){
+debugger;
+  if (!self.options.uuid && !self.options.localName){
     return;
   }
 
@@ -157,7 +164,7 @@ Plugin.prototype.setupBean = function() {
         self.emit('data', {accel: {x: x, y: y, z: z}});
       });
       setInterval(function(){
-        self._bean.requestAccell();
+        bean.requestAccell();
       }, self.options.broadcastAccelInterval);
     }
 
@@ -166,7 +173,7 @@ Plugin.prototype.setupBean = function() {
         self.emit('data', {temp: temp});
       });
       setInterval(function(){
-        self._bean.requestTemp();
+        bean.requestTemp();
       }, self.options.broadcastTempInterval);
     }
   });
