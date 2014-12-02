@@ -16,7 +16,7 @@ conx.on('error', console.error);
 var plugin = new Plugin();
 
 conx.on('ready', function(){
-  conx.whoami({uuid: config.uuid}, function(device){    
+  conx.whoami({uuid: config.uuid}, function(device){
     var options = device.options || {};
     plugin.setOptions(options);
     conx.update({
@@ -53,6 +53,6 @@ plugin.on('message', function(message){
 
 plugin.on('data', function(message) {
   conx.data(message);
-})
+});
 
 plugin.on('error', console.error);

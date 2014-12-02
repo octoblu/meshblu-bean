@@ -20,7 +20,7 @@ var MESSAGE_SCHEMA = {
 var OPTIONS_SCHEMA = {
   type: 'object',
   properties: {
-    uuid: {
+    beanUuid: {
       type: 'string',
       required: true,
       default: ''
@@ -73,7 +73,7 @@ Plugin.prototype.discoverDevice = function(callback) {
   done = function() {
     noble.stopScanning();
     noble.removeAllListeners('discover');
-  }
+  };
 
   timeout = setTimeout(function(){
     done();
@@ -81,22 +81,22 @@ Plugin.prototype.discoverDevice = function(callback) {
   }, self.options.timeout);
 
   noble.on('discover', function(peripheral){
-	  console.log('BLE UUID', peripheral.uuid);
-    if (peripheral.uuid === self.options.uuid || self.options.localName === self.options.localName) {
+	  console.log('Bean Found', peripheral.uuid, peripheral.advertisement.localName);
+    if (peripheral.uuid === self.options.beanUuid ||
+        self.options.localName === peripheral.advertisement.localName) {
       clearTimeout(timeout);
       done();
       callback(null, peripheral);
     }
   });
-
   noble.startScanning([beanAPI.UUID], true);
-}
+};
 
 Plugin.prototype.discoverService = function(peripheral, callback) {
   peripheral.discoverServices([beanAPI.UUID], function(err, services){
     callback(err, _.first(services));
   });
-}
+};
 
 Plugin.prototype.getBean = function(callback){
   var self = this;
@@ -124,7 +124,7 @@ Plugin.prototype.getBean = function(callback){
         self._bean.on('ready', function(err){
           callback(err, self._bean);
           self.onMessage({payload: {color: 'deepskyblue'}});
-        })
+        });
       });
     });
   });
@@ -148,8 +148,8 @@ Plugin.prototype.setOptions = function(options){
 
 Plugin.prototype.setupBean = function() {
   var self = this;
-debugger;
-  if (!self.options.uuid && !self.options.localName){
+
+  if (!self.options.beanUuid && !self.options.localName){
     return;
   }
 
