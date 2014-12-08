@@ -5,6 +5,7 @@ var EventEmitter = require('events').EventEmitter;
 var beanAPI = require('ble-bean');
 var noble = require('noble');
 var tinycolor = require('tinycolor2');
+var debug = require('debug')('meshblu-bean:index');
 var _ = require('lodash');
 
 var MESSAGE_SCHEMA = {
@@ -79,14 +80,18 @@ Plugin.prototype.discoverDevice = function(callback) {
     done();
     callback(new Error('Device Not Found'));
   }, self.options.timeout);
+  
+  self.timeout = timeout;
 
   noble.on('discover', function(peripheral){
-	  console.log('Bean Found', peripheral.uuid, peripheral.advertisement.localName);
-    if (peripheral.uuid === self.options.beanUuid ||
-        self.options.localName === peripheral.advertisement.localName) {
+	  debug('Discovered a bean', peripheral.uuid, peripheral.advertisement.localName);
+    if (peripheral.uuid === self.options.beanUuid || self.options.localName === peripheral.advertisement.localName) {
+      debug('Matched a bean', peripheral.advertisement.localName, peripheral.uuid);
       clearTimeout(timeout);
       done();
-      callback(null, peripheral);
+      if(self.timeout === timeout) {
+        callback(null, peripheral);
+      }
     }
   });
   noble.startScanning([beanAPI.UUID], true);
@@ -122,6 +127,7 @@ Plugin.prototype.getBean = function(callback){
         }
         self._bean = new beanAPI.Bean(service);
         self._bean.on('ready', function(err){
+          debug('chara', self._bean.chara);
           callback(err, self._bean);
           self.onMessage({payload: {color: 'deepskyblue'}});
         });
@@ -132,14 +138,17 @@ Plugin.prototype.getBean = function(callback){
 
 Plugin.prototype.onMessage = function(message){
   var payload = message.payload;
+  debug('received message', message);
   this.updateBean(payload);
 };
 
 Plugin.prototype.onConfig = function(device){
+  debug('onConfig', device.options);
   this.setOptions(device.options||{});
 };
 
 Plugin.prototype.setOptions = function(options){
+  debug('setOptions', options);
   this.options = options || {};
   this._bean = null;
 
@@ -182,16 +191,24 @@ Plugin.prototype.setupBean = function() {
 Plugin.prototype.updateBean = function(payload){
   var self, rgb;
   self = this;
+
   self.getBean(function(error, bean){
     if(error){
+      console.error('Error getting the bean', error);
       self.emit('error', error);
       return;
+    }
+
+    if(payload.on === false) {
+      payload.color = 'black';
     }
 
     if(payload.color){
       rgb = tinycolor(payload.color).toRgb();
       bean.setColor(new Buffer([rgb.r, rgb.g, rgb.b]));
     }
+
+
   });
 };
 
