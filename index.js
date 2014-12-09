@@ -170,7 +170,7 @@ Plugin.prototype.setupBean = function() {
 
     if (self.options.broadcastAccel) {
       bean.on('accell', function(x, y, z, valid){
-        self.emit('data', {accel: {x: x, y: y, z: z}});
+        self.emit('data', {accel: {x: parseFloat(x), y: parseFloat(y), z: parseFloat(z)}});
       });
       setInterval(function(){
         bean.requestAccell();
