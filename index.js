@@ -41,12 +41,22 @@ var OPTIONS_SCHEMA = {
       required: false,
       default: false
     },
+    broadcastRSSI: {
+      type: 'boolean',
+      required: false,
+      default: false
+    },
     broadcastAccelInterval: {
       type: 'integer',
       required: false,
       default: 1000
     },
     broadcastTempInterval: {
+      type: 'integer',
+      required: false,
+      default: 1000
+    },
+    broadcastRSSIInterval: {
       type: 'integer',
       required: false,
       default: 1000
@@ -128,7 +138,7 @@ Plugin.prototype.getBean = function(callback){
         self._bean = new beanAPI.Bean(service);
         self._bean.on('ready', function(err){
           debug('chara', self._bean.chara);
-          callback(err, self._bean);
+          callback(err, self._bean, peripheral);
           self.onMessage({payload: {color: 'deepskyblue'}});
         });
       });
@@ -162,14 +172,24 @@ Plugin.prototype.setupBean = function() {
     return;
   }
 
-  self.getBean(function(error, bean){
+  self.getBean(function(error, bean, peripheral){
     if(error){
       self.emit('error', error);
       return;
     }
 
+    if (self.options.broadcastRSSI) {
+      setInterval(function(){
+        peripheral.updateRssi(function(error, rssi) {
+          debug('data', {rssi: rssi});
+          self.emit('data', {rssi: rssi});
+        });
+      }, self.options.broadcastRSSIInterval);
+    }
+
     if (self.options.broadcastAccel) {
       bean.on('accell', function(x, y, z, valid){
+        debug('data', {accel: {x: parseFloat(x), y: parseFloat(y), z: parseFloat(z)}});
         self.emit('data', {accel: {x: parseFloat(x), y: parseFloat(y), z: parseFloat(z)}});
       });
       setInterval(function(){
@@ -179,6 +199,7 @@ Plugin.prototype.setupBean = function() {
 
     if (self.options.broadcastTemp) {
       bean.on('temp', function(temp, valid){
+        debug('data', {temp: temp});
         self.emit('data', {temp: temp});
       });
       setInterval(function(){
@@ -207,8 +228,6 @@ Plugin.prototype.updateBean = function(payload){
       rgb = tinycolor(payload.color).toRgb();
       bean.setColor(new Buffer([rgb.r, rgb.g, rgb.b]));
     }
-
-
   });
 };
 
