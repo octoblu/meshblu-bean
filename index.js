@@ -16,7 +16,7 @@ var MESSAGE_SCHEMA = {
       required: true
     },
     on: {
-      type: boolean,
+      type: 'boolean',
       required: false
     }
   }
