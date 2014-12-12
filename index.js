@@ -13,6 +13,10 @@ var MESSAGE_SCHEMA = {
   properties: {
     color: {
       type: 'string',
+      required: true
+    },
+    on: {
+      type: boolean,
       required: false
     }
   }
@@ -33,32 +37,32 @@ var OPTIONS_SCHEMA = {
     },
     broadcastAccel: {
       type: 'boolean',
-      required: false,
+      required: true,
       default: false
     },
     broadcastTemp: {
       type: 'boolean',
-      required: false,
+      required: true,
       default: false
     },
     broadcastRSSI: {
       type: 'boolean',
-      required: false,
+      required: true,
       default: false
     },
     broadcastAccelInterval: {
       type: 'integer',
-      required: false,
+      required: true,
       default: 1000
     },
     broadcastTempInterval: {
       type: 'integer',
-      required: false,
+      required: true,
       default: 1000
     },
     broadcastRSSIInterval: {
       type: 'integer',
-      required: false,
+      required: true,
       default: 1000
     },
     timeout: {
