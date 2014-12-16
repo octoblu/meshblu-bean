@@ -3,6 +3,8 @@ node_js:
 - '0.10'
 deploy:
   provider: npm
+  skip_cleanup: true
+  clean_up: false
   email: jade.meskill@gmail.com
   api_key:
     secure: Osl8edmTGbMIYl5erWTwESe1ruh0TJo1mEH87y1Ukb02BKp/dV7Xr/msZ3+t7NEnALoLjlORhAi7r+JROC7mjP1CZgt3XqYyLPlBnBH9PP2pyPCBpi68ydj5mkK62EsI+0bW1E5b69UauCThET9DP/2neGsCxE2g+HdKf5l5ZXM=
