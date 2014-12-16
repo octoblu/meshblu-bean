@@ -5,10 +5,10 @@ deploy:
   provider: npm
   email: jade.meskill@gmail.com
   api_key:
-    secure: afOiCZWOYxqoRmUT3ghHU5d8HXcfty09lqBvAd+0//uLrTiWOpV4twZFacRQ6azTgtFOKDV49UXfbALzeTeH3qWN1a8r9d5tXfHr4zRhhbAEh0iGDdyLVenK9Q4oVJbLeDcCAWcUgOdqAIn03YMJ/dSgpUTtvXocZ8q9Y1PUoFA=
+    secure: Osl8edmTGbMIYl5erWTwESe1ruh0TJo1mEH87y1Ukb02BKp/dV7Xr/msZ3+t7NEnALoLjlORhAi7r+JROC7mjP1CZgt3XqYyLPlBnBH9PP2pyPCBpi68ydj5mkK62EsI+0bW1E5b69UauCThET9DP/2neGsCxE2g+HdKf5l5ZXM=
   on:
     tags: true
     all_branches: true
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq libbluetooth-dev
+- sudo apt-get update -qq
+- sudo apt-get install -qq libbluetooth-dev
