@@ -3,6 +3,7 @@ node_js:
 - '0.10'
 deploy:
   provider: npm
+  email: jade.meskill@gmail.com
   api_key:
     secure: afOiCZWOYxqoRmUT3ghHU5d8HXcfty09lqBvAd+0//uLrTiWOpV4twZFacRQ6azTgtFOKDV49UXfbALzeTeH3qWN1a8r9d5tXfHr4zRhhbAEh0iGDdyLVenK9Q4oVJbLeDcCAWcUgOdqAIn03YMJ/dSgpUTtvXocZ8q9Y1PUoFA=
   on:
