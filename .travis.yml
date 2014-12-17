@@ -2,15 +2,30 @@ language: node_js
 node_js:
 - '0.10'
 deploy:
-  provider: npm
-  skip_cleanup: true
-  clean_up: false
-  email: jade.meskill@gmail.com
-  api_key:
-    secure: Osl8edmTGbMIYl5erWTwESe1ruh0TJo1mEH87y1Ukb02BKp/dV7Xr/msZ3+t7NEnALoLjlORhAi7r+JROC7mjP1CZgt3XqYyLPlBnBH9PP2pyPCBpi68ydj5mkK62EsI+0bW1E5b69UauCThET9DP/2neGsCxE2g+HdKf5l5ZXM=
-  on:
-    tags: true
-    all_branches: true
+  - provider: s3
+    access_key_id: AKIAIT4X4NDGM2WVL6VA
+    secret_access_key:
+      secure: DAOcqcwrtxo5CoTGp5E6A8zODrmAdSpipNx7ZcNMeB2VTMJ1hyDG/p1R9fO8kgFPMUcg1NqXcjKPt0RGgYeQwxguJhz2vk5Do+cadT3SIO7+nQHSfs0D+Yc6vu2bucXptuSczIE4kRSb9PTHAiO3QNmuERqX8n4Hvm8Lp7bg9uI=
+    bucket: gateblu
+    region: us-west-2
+    skip_cleanup: true
+    local-dir: javascript
+    on:
+      tags: true
+      all_branches: true
+  - provider: npm
+    skip_cleanup: true
+    clean_up: false
+    email: jade.meskill@gmail.com
+    api_key:
+      secure: Osl8edmTGbMIYl5erWTwESe1ruh0TJo1mEH87y1Ukb02BKp/dV7Xr/msZ3+t7NEnALoLjlORhAi7r+JROC7mjP1CZgt3XqYyLPlBnBH9PP2pyPCBpi68ydj5mkK62EsI+0bW1E5b69UauCThET9DP/2neGsCxE2g+HdKf5l5ZXM=
+    on:
+      tags: true
+      all_branches: true
 before_install:
-- sudo apt-get update -qq
-- sudo apt-get install -qq libbluetooth-dev
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq libbluetooth-dev
+before_deploy:
+  - sudo npm install -g ws browserify
+  - mkdir javascript
+  - browserify -s Plugin -r ws index.js > javascript/meshblu-bean.js
