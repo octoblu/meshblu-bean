@@ -26,6 +26,6 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq libbluetooth-dev
 before_deploy:
-  - sudo npm install -g ws browserify
+  - npm install ws browserify
   - mkdir javascript
-  - browserify -s Plugin -r ws index.js > javascript/meshblu-bean.js
+  - node_modules/.bin/browserify -s Plugin -r ws index.js > javascript/meshblu-bean.js
