@@ -9,7 +9,8 @@ deploy:
     bucket: gateblu
     region: us-west-2
     skip_cleanup: true
-    local-dir: javascript
+    local-dir: deploy
+    upload-dir: javascript
     on:
       tags: true
       all_branches: true
@@ -27,5 +28,5 @@ before_install:
   - sudo apt-get install -qq libbluetooth-dev
 before_deploy:
   - npm install ws browserify
-  - mkdir javascript
-  - node_modules/.bin/browserify -s Plugin -r ws index.js > javascript/meshblu-bean.js
+  - mkdir deploy
+  - node_modules/.bin/browserify -s Plugin -r ws index.js > deploy/meshblu-bean.js
