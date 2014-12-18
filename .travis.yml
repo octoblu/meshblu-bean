@@ -29,4 +29,4 @@ before_install:
 before_deploy:
   - npm install ws browserify
   - mkdir deploy
-  - node_modules/.bin/browserify -s Plugin index.js > deploy/meshblu-bean.js
+  - node_modules/.bin/browserify -s Plugin connector.js > deploy/meshblu-bean.js
