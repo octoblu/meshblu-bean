@@ -1,7 +1,7 @@
 'use strict';
 var Plugin = require('./index').Plugin;
 var skynet = require('skynet');
-
+var debug = require('debug')('meshblu-bean:connector');
 
 var Connector = function(config){
 
@@ -19,6 +19,7 @@ var Connector = function(config){
 
   conx.on('ready', function(){
     conx.whoami({uuid: config.uuid}, function(device){
+      debug('ready');
       var options = device.options || {};
       plugin.setOptions(options);
       conx.update({

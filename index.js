@@ -2,7 +2,7 @@
 
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
-var beanAPI = require('ble-bean');
+var Bean = require('ble-bean');
 var noble = require('noble');
 var tinycolor = require('tinycolor2');
 var debug = require('debug')('meshblu-bean:index');
@@ -50,6 +50,31 @@ var OPTIONS_SCHEMA = {
       required: true,
       default: false
     },
+    notifyScratch1: {
+      type: 'boolean',
+      required: true,
+      default: false
+    },
+    notifyScratch2: {
+      type: 'boolean',
+      required: true,
+      default: false
+    },
+    notifyScratch3: {
+      type: 'boolean',
+      required: true,
+      default: false
+    },
+    notifyScratch4: {
+      type: 'boolean',
+      required: true,
+      default: false
+    },
+    notifyScratch5: {
+      type: 'boolean',
+      required: true,
+      default: false
+    },
     broadcastAccelInterval: {
       type: 'integer',
       required: true,
@@ -77,38 +102,13 @@ function Plugin(){
   this.setOptions({});
   this.messageSchema = MESSAGE_SCHEMA;
   this.optionsSchema = OPTIONS_SCHEMA;
+  _.bindAll(this);
+  this.getBean = _.debounce(this.getBean, 1000);
   return this;
 }
 util.inherits(Plugin, EventEmitter);
 
 Plugin.prototype.discoverDevice = function(callback) {
-  var done, self, timeout;
-  self = this;
-
-  done = function() {
-    noble.stopScanning();
-    noble.removeAllListeners('discover');
-  };
-
-  timeout = setTimeout(function(){
-    done();
-    callback(new Error('Device Not Found'));
-  }, self.options.timeout);
-  
-  self.timeout = timeout;
-
-  noble.on('discover', function(peripheral){
-	  debug('Discovered a bean', peripheral.uuid, peripheral.advertisement.localName);
-    if (peripheral.uuid === self.options.beanUuid || self.options.localName === peripheral.advertisement.localName) {
-      debug('Matched a bean', peripheral.advertisement.localName, peripheral.uuid);
-      clearTimeout(timeout);
-      done();
-      if(self.timeout === timeout) {
-        callback(null, peripheral);
-      }
-    }
-  });
-  noble.startScanning([beanAPI.UUID], true);
 };
 
 Plugin.prototype.discoverService = function(peripheral, callback) {
@@ -127,25 +127,21 @@ Plugin.prototype.getBean = function(callback){
     return;
   }
 
-  self.discoverDevice(function(err, peripheral){
-    if (err){
-      self._bean = null;
-      callback(err);
-      return;
-    }
-    peripheral.connect(function(){
-      self.discoverService(peripheral, function(err, service) {
-        if (err) {
-          callback(err);
-          return;
-        }
-        self._bean = new beanAPI.Bean(service);
-        self._bean.on('ready', function(err){
-          debug('chara', self._bean.chara);
-          callback(err, self._bean, peripheral);
-          self.onMessage({payload: {color: 'deepskyblue'}});
-        });
-      });
+  Bean.is = function(peripheral){
+    return (peripheral.advertisement.localName === self.options.localName);
+  }
+
+  debug('discovering');
+  Bean.discover(function(bean){
+    debug('discovered');
+    bean.connectAndSetup(function(){
+      debug('connected and setted up');
+      self._bean = bean;
+      self.onMessage({payload: {color: 'deepskyblue'}});
+      _.delay(function(){
+        self.onMessage({payload: {color: 'black'}});
+      },2000);
+      callback(null, bean);
     });
   });
 };
@@ -164,7 +160,10 @@ Plugin.prototype.onConfig = function(device){
 Plugin.prototype.setOptions = function(options){
   debug('setOptions', options);
   this.options = options || {};
-  this._bean = null;
+  if(this._bean){
+    this._bean.disconnect(_.noop);
+    this._bean = null;
+  }
 
   this.setupBean();
 };
@@ -183,12 +182,7 @@ Plugin.prototype.setupBean = function() {
     }
 
     if (self.options.broadcastRSSI) {
-      setInterval(function(){
-        peripheral.updateRssi(function(error, rssi) {
-          debug('data', {rssi: rssi});
-          self.emit('data', {rssi: rssi});
-        });
-      }, self.options.broadcastRSSIInterval);
+      self.pollForRssi(bean, self.options.broadcastRSSIInterval);
     }
 
     if (self.options.broadcastAccel) {
@@ -196,9 +190,7 @@ Plugin.prototype.setupBean = function() {
         debug('data', {accel: {x: parseFloat(x), y: parseFloat(y), z: parseFloat(z)}});
         self.emit('data', {accel: {x: parseFloat(x), y: parseFloat(y), z: parseFloat(z)}});
       });
-      setInterval(function(){
-        bean.requestAccell();
-      }, self.options.broadcastAccelInterval);
+      self.poll(bean, bean.requestAccell, self.options.broadcastAccelInterval);
     }
 
     if (self.options.broadcastTemp) {
@@ -206,12 +198,69 @@ Plugin.prototype.setupBean = function() {
         debug('data', {temp: temp});
         self.emit('data', {temp: temp});
       });
-      setInterval(function(){
-        bean.requestTemp();
-      }, self.options.broadcastTempInterval);
+      self.poll(bean, bean.requestTemp, self.options.broadcastTempInterval);
+    }
+
+    if (self.options.notifyScratch1) {
+      bean.notifyOne(function(data){
+        var buffer = new Buffer([data['0'], data['1'], data['2'], data['3']]);
+        self.emit('data', {scratch1: buffer.readInt32LE(0)});
+      }, _.noop);
+    }
+
+    if (self.options.notifyScratch2) {
+      bean.notifyOne(function(data){
+        var buffer = new Buffer([data['0'], data['1'], data['2'], data['3']]);
+        self.emit('data', {scratch2: buffer.readInt32LE(0)});
+      }, _.noop);
+    }
+
+    if (self.options.notifyScratch3) {
+      bean.notifyOne(function(data){
+        var buffer = new Buffer([data['0'], data['1'], data['2'], data['3']]);
+        self.emit('data', {scratch3: buffer.readInt32LE(0)});
+      }, _.noop);
+    }
+
+    if (self.options.notifyScratch4) {
+      bean.notifyOne(function(data){
+        var buffer = new Buffer([data['0'], data['1'], data['2'], data['3']]);
+        self.emit('data', {scratch4: buffer.readInt32LE(0)});
+      }, _.noop);
+    }
+
+    if (self.options.notifyScratch5) {
+      bean.notifyOne(function(data){
+        var buffer = new Buffer([data['0'], data['1'], data['2'], data['3']]);
+        self.emit('data', {scratch5: buffer.readInt32LE(0)});
+      }, _.noop);
     }
   });
 };
+
+Plugin.prototype.poll = function(bean, func, interval){
+  var self = this;
+  try {
+    func.call(bean, function(){
+      _.delay(self.poll, interval, bean, func, interval);
+    });
+  } catch (error) {
+    debug('error polling', error);
+  }
+};
+
+Plugin.prototype.pollForRssi = function(bean, interval){
+  var self = this;
+  try {
+    bean._peripheral.updateRssi(function(error, rssi){
+      debug('data', {rssi: rssi});
+      self.emit('data', {rssi: rssi});
+      _.delay(self.pollForRssi, interval, bean, interval);
+    });
+  } catch (error) {
+    debug('error polling for rssi', error);
+  }
+}
 
 Plugin.prototype.updateBean = function(payload){
   var self, rgb;
@@ -230,7 +279,7 @@ Plugin.prototype.updateBean = function(payload){
 
     if(payload.color){
       rgb = tinycolor(payload.color).toRgb();
-      bean.setColor(new Buffer([rgb.r, rgb.g, rgb.b]));
+      bean.setColor(new Buffer([rgb.r, rgb.g, rgb.b]), _.noop);
     }
   });
 };
