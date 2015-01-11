@@ -1,11 +1,11 @@
 'use strict';
 var Plugin = require('./index').Plugin;
-var skynet = require('skynet');
+var meshblu = require('meshblu');
 var debug = require('debug')('meshblu-bean:connector');
 
 var Connector = function(config){
 
-  var conx = skynet.createConnection({
+  var conx = meshblu.createConnection({
     server : config.server,
     port   : config.port,
     uuid   : config.uuid,
