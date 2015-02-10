@@ -209,28 +209,28 @@ Plugin.prototype.setupBean = function() {
     }
 
     if (self.options.notifyScratch2) {
-      bean.notifyOne(function(data){
+      bean.notifyTwo(function(data){
         var buffer = new Buffer([data['0'], data['1'], data['2'], data['3']]);
         self.emit('data', {scratch2: buffer.readInt32LE(0)});
       }, _.noop);
     }
 
     if (self.options.notifyScratch3) {
-      bean.notifyOne(function(data){
+      bean.notifyThree(function(data){
         var buffer = new Buffer([data['0'], data['1'], data['2'], data['3']]);
         self.emit('data', {scratch3: buffer.readInt32LE(0)});
       }, _.noop);
     }
 
     if (self.options.notifyScratch4) {
-      bean.notifyOne(function(data){
+      bean.notifyFour(function(data){
         var buffer = new Buffer([data['0'], data['1'], data['2'], data['3']]);
         self.emit('data', {scratch4: buffer.readInt32LE(0)});
       }, _.noop);
     }
 
     if (self.options.notifyScratch5) {
-      bean.notifyOne(function(data){
+      bean.notifyFive(function(data){
         var buffer = new Buffer([data['0'], data['1'], data['2'], data['3']]);
         self.emit('data', {scratch5: buffer.readInt32LE(0)});
       }, _.noop);
