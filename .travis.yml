@@ -2,31 +2,31 @@ language: node_js
 node_js:
 - '0.10'
 deploy:
-  - provider: s3
-    access_key_id: AKIAIT4X4NDGM2WVL6VA
-    secret_access_key:
-      secure: DAOcqcwrtxo5CoTGp5E6A8zODrmAdSpipNx7ZcNMeB2VTMJ1hyDG/p1R9fO8kgFPMUcg1NqXcjKPt0RGgYeQwxguJhz2vk5Do+cadT3SIO7+nQHSfs0D+Yc6vu2bucXptuSczIE4kRSb9PTHAiO3QNmuERqX8n4Hvm8Lp7bg9uI=
-    bucket: gateblu
-    region: us-west-2
-    skip_cleanup: true
-    local-dir: deploy
-    upload-dir: javascript
-    on:
-      tags: true
-      all_branches: true
-  - provider: npm
-    skip_cleanup: true
-    clean_up: false
-    email: serveradmin@octoblu.com
-    api_key:
-      secure: "cIzdTjIn1zdQx7Vd6BfOETF74Q2ANlAm0D4f87E1otvL93gwtdvZU71a8nrqYtjWuUd64dKpID+YOM0ceSAtA+lGpZPrCA3/ywGL1hCgU6IxDO4xd0mNe7cEhFNrh+5+yqbBy1owkO8kXKShNlXABXUxKJDWRoXhfPyMvBbJ7gc="
-    on:
-      tags: true
-      all_branches: true
+- provider: s3
+  access_key_id: AKIAIT4X4NDGM2WVL6VA
+  secret_access_key:
+    secure: DAOcqcwrtxo5CoTGp5E6A8zODrmAdSpipNx7ZcNMeB2VTMJ1hyDG/p1R9fO8kgFPMUcg1NqXcjKPt0RGgYeQwxguJhz2vk5Do+cadT3SIO7+nQHSfs0D+Yc6vu2bucXptuSczIE4kRSb9PTHAiO3QNmuERqX8n4Hvm8Lp7bg9uI=
+  bucket: gateblu
+  region: us-west-2
+  skip_cleanup: true
+  local-dir: deploy
+  upload-dir: javascript
+  on:
+    tags: true
+    all_branches: true
+- provider: npm
+  skip_cleanup: true
+  clean_up: false
+  email: serveradmin@octoblu.com
+  api_key:
+    secure: "cIzdTjIn1zdQx7Vd6BfOETF74Q2ANlAm0D4f87E1otvL93gwtdvZU71a8nrqYtjWuUd64dKpID+YOM0ceSAtA+lGpZPrCA3/ywGL1hCgU6IxDO4xd0mNe7cEhFNrh+5+yqbBy1owkO8kXKShNlXABXUxKJDWRoXhfPyMvBbJ7gc="
+  on:
+    tags: true
+    all_branches: true
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq libbluetooth-dev
 before_deploy:
   - npm install ws browserify
-  - mkdir deploy
+  - mkdir -p deploy
   - node_modules/.bin/browserify -s Connector connector.js > deploy/meshblu-bean.js
