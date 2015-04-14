@@ -1,6 +1,6 @@
 {
   "name": "meshblu-bean",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "scripts": {
     "start": "node command.js"
   },
@@ -9,7 +9,7 @@
     "debug": "^2.1.0",
     "lodash": "^2.4.1",
     "noble": "^0.3.6",
-    "meshblu": "^1.9.0",
+    "meshblu": "^1.20.0",
     "tinycolor2": "^1.0.0"
   },
   "keywords": [
