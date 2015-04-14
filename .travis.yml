@@ -17,9 +17,9 @@ deploy:
   - provider: npm
     skip_cleanup: true
     clean_up: false
-    email: jade.meskill@gmail.com
+    email: serveradmin@octoblu.com
     api_key:
-      secure: Osl8edmTGbMIYl5erWTwESe1ruh0TJo1mEH87y1Ukb02BKp/dV7Xr/msZ3+t7NEnALoLjlORhAi7r+JROC7mjP1CZgt3XqYyLPlBnBH9PP2pyPCBpi68ydj5mkK62EsI+0bW1E5b69UauCThET9DP/2neGsCxE2g+HdKf5l5ZXM=
+      secure: "cIzdTjIn1zdQx7Vd6BfOETF74Q2ANlAm0D4f87E1otvL93gwtdvZU71a8nrqYtjWuUd64dKpID+YOM0ceSAtA+lGpZPrCA3/ywGL1hCgU6IxDO4xd0mNe7cEhFNrh+5+yqbBy1owkO8kXKShNlXABXUxKJDWRoXhfPyMvBbJ7gc="
     on:
       tags: true
       all_branches: true
