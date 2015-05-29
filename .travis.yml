@@ -1,32 +1,38 @@
+sudo: false
 language: node_js
+cache:
+  bundler: true
+  directories:
+    - node_modules
 node_js:
 - '0.10'
+before_deploy:
+- mkdir -p deploy/meshblu-bean/latest
+- mkdir -p deploy/meshblu-bean/$TRAVIS_TAG
+- node_modules/.bin/browserify -s Connector connector.js > deploy/meshblu-bean/latest/meshblu-bean.js
+- gzip deploy/meshblu-bean/latest/meshblu-bean.js
+- mv deploy/meshblu-bean/latest/meshblu-bean.js.gz deploy/meshblu-bean/latest/meshblu-bean.js
+- cp deploy/meshblu-bean/latest/meshblu-bean.js deploy/meshblu-bean/$TRAVIS_TAG/meshblu-bean.js
 deploy:
-- provider: s3
-  access_key_id: AKIAIT4X4NDGM2WVL6VA
-  secret_access_key:
-    secure: DAOcqcwrtxo5CoTGp5E6A8zODrmAdSpipNx7ZcNMeB2VTMJ1hyDG/p1R9fO8kgFPMUcg1NqXcjKPt0RGgYeQwxguJhz2vk5Do+cadT3SIO7+nQHSfs0D+Yc6vu2bucXptuSczIE4kRSb9PTHAiO3QNmuERqX8n4Hvm8Lp7bg9uI=
-  bucket: gateblu
-  region: us-west-2
-  skip_cleanup: true
-  local-dir: deploy
-  upload-dir: javascript
-  on:
-    tags: true
-    all_branches: true
 - provider: npm
   skip_cleanup: true
   clean_up: false
   email: serveradmin@octoblu.com
   api_key:
-    secure: "cIzdTjIn1zdQx7Vd6BfOETF74Q2ANlAm0D4f87E1otvL93gwtdvZU71a8nrqYtjWuUd64dKpID+YOM0ceSAtA+lGpZPrCA3/ywGL1hCgU6IxDO4xd0mNe7cEhFNrh+5+yqbBy1owkO8kXKShNlXABXUxKJDWRoXhfPyMvBbJ7gc="
+    secure: ItQFt+eqduvqEOWI4EbT7TLLsBbbcrmIFOEb1xwNc65NNnEfJpJWDrLUJMlmcrdkJdGDuPHNV+JuEOMlMLMZuN2gRGRgf94ZTvBK4j2zXbDEJapZ+uG76mYN/F7oPIyIiljDphJ+q6PVCzYubhejwr7vHo5vLt3wzmaZf9swM80=
   on:
     tags: true
     all_branches: true
-before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq libbluetooth-dev
-before_deploy:
-  - npm install ws browserify
-  - mkdir -p deploy
-  - node_modules/.bin/browserify -s Connector connector.js > deploy/meshblu-bean.js
+- provider: s3
+  access_key_id: AKIAIT4X4NDGM2WVL6VA
+  secret_access_key:
+    secure: "EKkHE7tOHyRX+tqCDfuDRCXf87/Zl2G++LT9PMQLOh5feB4Yhr0iVuGMfPA08D2HTwHE9l4ow17j9DW0APWN6yVAhBNSfC+RKYOWiYfHSr11IapOyC77CjG5ThO7ef5SIJ22Ga1/JAbQN2+H9AmZMS+LoJHBWFLgRubApaRb5QE="
+  bucket: octoblu-cdn
+  region: us-west-2
+  skip_cleanup: true
+  detect_encoding: true
+  local-dir: deploy
+  upload-dir: js
+  on:
+    tags: true
+    all_branches: true

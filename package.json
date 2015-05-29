@@ -1,6 +1,7 @@
 {
   "name": "meshblu-bean",
-  "version": "2.0.3",
+  "version": "2.1.0",
+  "main": "connector.js",
   "scripts": {
     "start": "node command.js"
   },
@@ -16,5 +17,8 @@
     "meshblu-connector",
     "gateblu",
     "gateblu-mobile"
-  ]
+  ],
+  "devDependencies": {
+    "browserify": "^10.2.3"
+  }
 }
