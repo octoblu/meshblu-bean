@@ -1,18 +1,28 @@
 {
   "name": "meshblu-bean",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "main": "connector.js",
+  "repository": "octoblu/meshblu-bean",
+  "license": "MIT",
+  "author": "Octoblu, Inc. <sqrt@octoblu.com>",
   "scripts": {
-    "start": "node command.js"
+    "preinstall": "node -e \"try{require('./skip-install.js')}catch(e){}\"",
+    "start": "node command.js",
+    "test": "exit 0"
   },
   "dependencies": {
     "ble-bean": "^2.0.2",
     "debug": "^2.1.0",
-    "lodash": "^2.4.1",
+    "lodash": "^3.9.3",
+    "meshblu": "^1.22.0",
     "noble": "^0.3.6",
-    "meshblu": "^1.20.0",
     "tinycolor2": "^1.0.0"
   },
+  "bundledDependencies": [
+    "request",
+    "tar",
+    "fstream"
+  ],
   "keywords": [
     "meshblu-connector",
     "gateblu",
