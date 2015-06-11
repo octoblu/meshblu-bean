@@ -27,9 +27,9 @@ deploy:
     tags: true
     all_branches: true
 - provider: s3
-  access_key_id: AKIAJFJGT4PA3PB7DIYQ
+  access_key_id: AKIAJH2D5IPIRHYJT5IA
   secret_access_key:
-    secure: "fyP3kWrOdAbNv1yBT2jWcP2DBCEqWeu/zI7JGokj5YUtA0QNrEuheWKWMpXxK5WzpfaHhmgq6Xy+fa1HGCqEzptOZDiCs94HZuP8KY0dmyKxVm2Kasjo6vye0rsmRKG5BaI31Bu3H3qR8AH3LAIN3yYoId7NQrzNQRyAJVCEJMI="
+    secure: "Tfc6WLjbfaQjP5lJsw6Ot8E9rX2YOlyETP0la7WE0gXX01QDpWqbEQEdGY7dCiGVNQuQQJmkrdNMLeJXM4PiOPtPBe+h+5il+FIuGIias5Uq9mqdoYkXvzR9j5cB480vAiFapX4+hb4XegSRqRePPabS1V0+5zyGBFu/rwp/JN4="
   bucket: octoblu-cdn
   region: us-west-2
   skip_cleanup: true
