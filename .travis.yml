@@ -9,6 +9,7 @@ node_js:
 before_install:
 - sudo apt-get update -qq
 - sudo apt-get install -qq libbluetooth-dev
+- npm install npm -g
 before_deploy:
 - mkdir -p deploy/meshblu-bean/latest
 - mkdir -p deploy/meshblu-bean/$TRAVIS_TAG
