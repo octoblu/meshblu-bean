@@ -2,7 +2,7 @@
 
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
-var Bean = require('ble-bean');
+var Bean = require('@octoblu/ble-bean');
 var noble = require('noble');
 var tinycolor = require('tinycolor2');
 var debug = require('debug')('meshblu-bean:index');
