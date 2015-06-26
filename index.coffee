@@ -6,9 +6,6 @@ tinycolor      = require 'tinycolor2'
 debug          = require('debug')('meshblu-bean:index')
 _              = require 'lodash'
 
-debug = (str) ->
-  console.log JSON.stringify(arguments)
-
 MESSAGE_SCHEMA =
   type: 'object'
   properties:
