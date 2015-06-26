@@ -13,7 +13,7 @@ before_install:
 before_deploy:
 - mkdir -p deploy/meshblu-bean/latest
 - mkdir -p deploy/meshblu-bean/$TRAVIS_TAG
-- node_modules/.bin/browserify -s Connector connector.js > deploy/meshblu-bean/latest/meshblu-bean.js
+- node_modules/.bin/browserify -t coffeeify -s Connector connector.js > deploy/meshblu-bean/latest/meshblu-bean.js
 - gzip deploy/meshblu-bean/latest/meshblu-bean.js
 - mv deploy/meshblu-bean/latest/meshblu-bean.js.gz deploy/meshblu-bean/latest/meshblu-bean.js
 - cp deploy/meshblu-bean/latest/meshblu-bean.js deploy/meshblu-bean/$TRAVIS_TAG/meshblu-bean.js

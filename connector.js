@@ -1,5 +1,5 @@
 'use strict';
-var Plugin = require('./index').Plugin;
+var Plugin = require('./index.coffee').Plugin;
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 var meshblu = require('meshblu');
