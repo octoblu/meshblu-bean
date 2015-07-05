@@ -105,7 +105,7 @@ class Plugin extends EventEmitter
       bean._peripheral.updateRssi (error, rssi) =>
         data = rssi: rssi
         debug 'rssi data', data
-        @emit 'data', data
+        @sendMessage data
     , @options.broadcastRSSIInterval
 
   pollForAccell: (bean) =>
@@ -116,7 +116,7 @@ class Plugin extends EventEmitter
           y: parseFloat y
           z: parseFloat z
       debug 'accel data', data
-      @emit 'data', data
+      @sendMessage data
     requestAccell = _.bind bean.requestAccell, bean
     clearInterval @_pollForAccellInterval
     @_pollForAccellInterval = setInterval requestAccell, @options.broadcastAccelInterval
@@ -125,7 +125,7 @@ class Plugin extends EventEmitter
     bean.on 'temp', (temp, valid) =>
       data = temp: temp
       debug 'temp data', data
-      @emit 'data', data
+      @sendMessage data
 
     requestTemp = _.bind bean.requestTemp, bean
     clearInterval @_pollForTempInterval
@@ -136,8 +136,13 @@ class Plugin extends EventEmitter
       buffer = new Buffer [data['0'], data['1'], data['2'], data['3']]
       data = {}
       data[key] = buffer.readInt32LE 0
-      @emit 'data', data
+      @sendMessage data
     , _.noop
+
+  sendMessage: (data) =>
+    @emit 'message',
+      devices: ['*']
+      payload: data
 
   setupBean: =>
     return unless @options.localName?
