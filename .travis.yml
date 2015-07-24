@@ -18,7 +18,6 @@ before_deploy:
 - mv deploy/meshblu-bean/latest/meshblu-bean.js.gz deploy/meshblu-bean/latest/meshblu-bean.js
 - cp deploy/meshblu-bean/latest/meshblu-bean.js deploy/meshblu-bean/$TRAVIS_TAG/meshblu-bean.js
 deploy:
-  matrix:
   - provider: npm
     skip_cleanup: true
     clean_up: false
