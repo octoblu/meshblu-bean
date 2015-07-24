@@ -1,6 +1,6 @@
 {
   "name": "meshblu-bean",
-  "version": "2.2.7",
+  "version": "3.0.1",
   "main": "connector.js",
   "repository": "octoblu/meshblu-bean",
   "license": "MIT",
