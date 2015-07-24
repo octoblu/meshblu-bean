@@ -1,6 +1,6 @@
 {
   "name": "meshblu-bean",
-  "version": "2.2.6",
+  "version": "2.2.7",
   "main": "connector.js",
   "repository": "octoblu/meshblu-bean",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "coffeeify": "^1.1.0",
     "debug": "^2.1.0",
     "lodash": "^3.9.3",
-    "meshblu": "^1.22.0",
+    "meshblu": "^1.30.0",
     "noble": "^1.0.1",
     "tinycolor2": "^1.0.0"
   },
