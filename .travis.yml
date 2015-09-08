@@ -40,5 +40,3 @@ deploy:
     on:
       tags: true
       all_branches: true
-  api_key:
-    secure: XtQN1htDKE3JRFs09Mdc0Xkwj0Wk0s0da5q5hjSxzKShmX0wt25ot14d1l5ZwCnS9FSVVGcyBYhUHIfGfzxAcT6HBkwjYJUiC+R+eQJpPYiStelmCHkYYyxJ65sVc8gEFqtW2rGrCGxLbDS1zhMGJWqZ8gdmoVpgo/3sctwv/QM=
