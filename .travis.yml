@@ -6,8 +6,8 @@ addons:
   apt:
     packages:
     - libbluetooth-dev
-before_instasll:
-  - npm install npm -g
+before_install:
+  - npm install npm@2.3.0 -g
 before_deploy:
   - npm install ws browserify coffeeify
   - mkdir -p deploy/meshblu-bean/latest
