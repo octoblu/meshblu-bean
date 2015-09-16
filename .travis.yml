@@ -1,38 +1,26 @@
-sudo: true
 language: node_js
-cache:
-  bundler: true
-  directories:
-  - node_modules
 node_js:
 - '0.10'
-before_install:
-- sudo apt-get update -qq
-- sudo apt-get install -qq libbluetooth-dev
-- npm install npm -g
+- '0.11'
+addons:
+  apt:
+    packages:
+    - libbluetooth-dev
 before_deploy:
-- mkdir -p deploy/meshblu-bean/latest
-- mkdir -p deploy/meshblu-bean/$TRAVIS_TAG
-- node_modules/.bin/browserify -t coffeeify -s Connector connector.js > deploy/meshblu-bean/latest/meshblu-bean.js
-- gzip deploy/meshblu-bean/latest/meshblu-bean.js
-- mv deploy/meshblu-bean/latest/meshblu-bean.js.gz deploy/meshblu-bean/latest/meshblu-bean.js
-- cp deploy/meshblu-bean/latest/meshblu-bean.js deploy/meshblu-bean/$TRAVIS_TAG/meshblu-bean.js
+  - npm install ws browserify coffeeify
+  - mkdir -p deploy/meshblu-bean/latest
+  - mkdir -p deploy/meshblu-bean/$TRAVIS_TAG
+  - node_modules/.bin/browserify -t coffeeify -s Connector connector.js > deploy/meshblu-bean/latest/meshblu-bean.js
+  - gzip deploy/meshblu-bean/latest/meshblu-bean.js
+  - mv deploy/meshblu-bean/latest/meshblu-bean.js.gz deploy/meshblu-bean/latest/meshblu-bean.js
+  - cp deploy/meshblu-bean/latest/meshblu-bean.js deploy/meshblu-bean/$TRAVIS_TAG/meshblu-bean.js
 deploy:
-  - provider: npm
-    skip_cleanup: true
-    clean_up: false
-    email: serveradmin@octoblu.com
-    api_key:
-      secure: YQdMDAzy0afknIAkV2jXtkA539qWuWnf+0lTNzKIbihKxT23/138aKqT9yRr8fBcu902vkIlIhap0iKxIbXX1BmI4iUcjeU8UcAi1kSvFT5ZfXwB7RfmMQpXT80TkpHErJxEtowo+biP7W+RhzYVmEzHmCicVn3pTWwaUmgwME4=
-    on:
-      tags: true
-      all_branches: true
   - provider: s3
+    region: us-west-2
     access_key_id: AKIAJH2D5IPIRHYJT5IA
     secret_access_key:
-      secure: Tfc6WLjbfaQjP5lJsw6Ot8E9rX2YOlyETP0la7WE0gXX01QDpWqbEQEdGY7dCiGVNQuQQJmkrdNMLeJXM4PiOPtPBe+h+5il+FIuGIias5Uq9mqdoYkXvzR9j5cB480vAiFapX4+hb4XegSRqRePPabS1V0+5zyGBFu/rwp/JN4=
+      secure: "DBTCEtVrbhX5VI6Gm1sIjT04n/msJsE3qrevFCvK3/msJRKTvPfcLGa+iNCyiXZXg3Lcs2DNuH8QcWDmb3ejrQgmucYAuu6HDESfzicUE7CJVO3h/E5fbbnLd23o02D1qV9t/KUKMB+hnK8SP0JpbWtzqiZAdT5fI0AOEdKIKkI="
     bucket: octoblu-cdn
-    region: us-west-2
     skip_cleanup: true
     detect_encoding: true
     local-dir: deploy
@@ -40,3 +28,14 @@ deploy:
     on:
       tags: true
       all_branches: true
+      node: '0.10'
+  - provider: npm
+    skip_cleanup: true
+    email: serveradmin@octoblu.com
+    api_key:
+      secure: "Mz+WmbyREfee/hbbLmZmCk7YrwQtMu1WcWm6MPE/yPFJ3AJoWc/RenGTOhQX6Pn+/fLcNrHDtRjWlIuxo/xvvT1Y+MtRVbySqAQHMes7f1NTt30HameUFm1vbWlMOInPjFDtI11+KXJS8CCtBqGBIpITeht7uzGcF3Vdm4QxoGM="
+    clean_up: false
+    on:
+      tags: true
+      all_branches: true
+      node: '0.11'
