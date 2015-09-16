@@ -1,7 +1,7 @@
 {
   "name": "meshblu-bean",
   "repository": "octoblu/meshblu-bean",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "main": "connector.js",
   "scripts": {
     "preinstall": "node -e \"try{require('./skip-install.js')}catch(e){}\"",
