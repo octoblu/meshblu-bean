@@ -1,35 +1,51 @@
 {
   "name": "meshblu-bean",
-  "version": "2.2.4",
-  "main": "connector.js",
   "repository": "octoblu/meshblu-bean",
-  "license": "MIT",
-  "author": "Octoblu, Inc. <sqrt@octoblu.com>",
+  "version": "2.3.0",
+  "main": "connector.js",
   "scripts": {
     "preinstall": "node -e \"try{require('./skip-install.js')}catch(e){}\"",
     "start": "node command.js",
     "test": "exit 0"
   },
   "dependencies": {
-    "@octoblu/ble-bean": "^2.2.0",
+    "@octoblu/ble-bean": "^2.3.0",
     "debug": "^2.1.0",
-    "lodash": "^3.9.3",
-    "meshblu": "^1.22.0",
-    "noble": "^1.0.1",
-    "tinycolor2": "^1.0.0"
+    "lodash": "^3.10.1",
+    "meshblu": "^1.30.1",
+    "noble": "^1.1.0",
+    "tinycolor2": "^1.1.2"
   },
   "bundledDependencies": [
     "request",
     "tar",
     "fstream"
   ],
+  "platformDependencies": {
+    "darwin": [
+      "xcode"
+    ],
+    "win32": [
+      "Python 2.7",
+      "Visual Studio (Express)",
+      "Compatible Bluetooth 4.0 USB adapter",
+      "WinUSB driver setup for Bluetooth 4.0 USB adapter, using Zadig tool"
+    ],
+    "win64": [
+      "Python 2.7",
+      "Visual Studio (Express)",
+      "Compatible Bluetooth 4.0 USB adapter",
+      "WinUSB driver setup for Bluetooth 4.0 USB adapter, using Zadig tool"
+    ],
+    "linux": [
+      "Kernel version 3.6 or above",
+      "libbluetooth-dev"
+    ],
+    "android": [],
+    "ios": []
+  },
   "keywords": [
     "meshblu-connector",
-    "gateblu",
-    "gateblu-mobile"
-  ],
-  "devDependencies": {
-    "browserify": "^10.2.3",
-    "ws": "^0.7.2"
-  }
+    "gateblu"
+  ]
 }
