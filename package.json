@@ -1,7 +1,7 @@
 {
   "name": "meshblu-bean",
   "repository": "octoblu/meshblu-bean",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "main": "connector.js",
   "scripts": {
     "preinstall": "node -e \"try{require('./skip-install.js')}catch(e){}\"",
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@octoblu/ble-bean": "^2.3.0",
+    "coffee-script": "^1.10.0",
     "debug": "^2.1.0",
     "lodash": "^3.10.1",
     "meshblu": "^1.30.1",
