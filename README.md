@@ -1,11 +1,14 @@
 ## meshblu-bean
 
+<<<<<<< HEAD
 [![Build Status](https://travis-ci.org/octoblu/meshblu-bean.svg?branch=master)](https://travis-ci.org/octoblu/meshblu-bean)
 [![Code Climate](https://codeclimate.com/github/octoblu/meshblu-bean/badges/gpa.svg)](https://codeclimate.com/github/octoblu/meshblu-bean)
 [![Test Coverage](https://codeclimate.com/github/octoblu/meshblu-bean/badges/coverage.svg)](https://codeclimate.com/github/octoblu/meshblu-bean)
 [![npm version](https://badge.fury.io/js/meshblu-bean.svg)](http://badge.fury.io/js/meshblu-bean)
 [![Gitter](https://badges.gitter.im/octoblu/help.svg)](https://gitter.im/octoblu/help)
 
+=======
+>>>>>>> d08cc8f82b88ff0c47fa571cbb763a5d0226cdba
 A Meshblu connector for use in Octoblu or with other services.
 
 ### Setup Instructions

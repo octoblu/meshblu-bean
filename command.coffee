@@ -10,5 +10,5 @@ connector.on 'error', (error) ->
   return console.error error if _.isPlainObject error
   console.error error.toString()
   console.error error.stack if error?.stack?
-
+  
 connector.run()

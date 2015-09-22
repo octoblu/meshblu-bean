@@ -16,7 +16,7 @@ install:
   - node --version
   - npm --version
   - SET PATH=%APPDATA%\npm;%PATH%
-  - npm update -g npm
+  - npm install -g npm@2.3.0
   - npm --version
   - node -e "console.log(process.arch);"
   - FOR /F "delims=" %%a IN ('node -e "console.log(require('./package.json').version)"') DO SET PACKAGE_VERSION=%%~a
