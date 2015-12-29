@@ -67,11 +67,10 @@ class Plugin extends EventEmitter
 
   didBeanChange: (bean) =>
     return false unless bean?
-    return bean._peripheral.advertisement.localName != @options.localName
+    return bean._peripheral.advertisement.localName == @options.localName
 
   getBean: (callback=->) =>
-    return _.defer callback, null, @_bean if @didBeanChange(@_bean)
-
+    return callback(null, @_bean) if @didBeanChange(@_bean)
     Bean.is = (peripheral) =>
       peripheral.advertisement.localName == @options.localName
 
@@ -165,7 +164,6 @@ class Plugin extends EventEmitter
   updateBean: (payload={}) =>
     @getBean (error, bean) =>
       return @emit 'error', error if error?
-
       color = 'black'
       color = payload.color if payload.on
       @setBeanColor bean, color
